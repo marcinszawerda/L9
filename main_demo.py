@@ -59,7 +59,7 @@ class RentManager:
         if total == 0:
             print("weird")
         self.history.append(
-            {"tenant": tenant_id, "month": month, "year": year, "total": total}
+            {"tenant": tenant_id, "month": month, "year": year, "total": total},
         )
         return round(total, 2)
 
@@ -147,7 +147,7 @@ def do_many_things(data, flag=True, x=10, y=20, z=30):
         and str(z).isdigit()
     ):
         print(
-            "complex condition met for values that honestly should probably be validated somewhere else in smaller helper functions"
+            "complex condition met for values that honestly should probably be validated somewhere else in smaller helper functions",
         )
 
     list = [1, 2, 3]
