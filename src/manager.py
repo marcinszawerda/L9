@@ -1,30 +1,28 @@
-"""
-Manager class for handling apartment management operations.
-"""
+"""Manager class for handling apartment management operations."""
 
-from typing import List
 from datetime import datetime
 
 from src.models import (
     Apartment,
+    ApartmentEvent,
+    ApartmentSettlement,
     Bill,
     Parameters,
     Tenant,
-    ApartmentEvent,
     TenantBlacklistEntry,
     TenantSettlement,
     Transfer,
-    ApartmentSettlement,
 )
 
 
 class Manager:
-    """
-    Manager class responsible for loading data and providing methods
-    to manage apartments, tenants, transfers, bills, and apartment events.
+    """Manager class responsible for loading data and providing methods to manage.
+
+    apartments, tenants, transfers, bills, and apartment events.
     """
 
-    def __init__(self, parameters: Parameters):
+    def __init__(self, parameters: Parameters) -> None:
+        """Initialize the manager with application parameters and load data."""
         self.parameters = parameters
 
         self.apartments = {}
@@ -36,7 +34,7 @@ class Manager:
 
         self.load_data()
 
-    def load_data(self):
+    def load_data(self) -> None:
         """Load data from JSON files specified in the parameters."""
         self.apartments = Apartment.from_json_file(self.parameters.apartments_json_path)
         self.tenants = Tenant.from_json_file(self.parameters.tenants_json_path)
@@ -46,7 +44,7 @@ class Manager:
             self.parameters.tenants_blacklist_json_path
         )
 
-    def load_additional_data(self):
+    def load_additional_data(self) -> None:
         """Load additional data such as apartment events from JSON files."""
         self.apartment_events = ApartmentEvent.from_json_file(
             self.parameters.apartment_events_json_path
@@ -54,7 +52,7 @@ class Manager:
 
     def generate_apartment_events_report(
         self, apartment_key: str, only_unsolved: bool = True
-    ) -> List[ApartmentEvent]:
+    ) -> list[ApartmentEvent]:
         """Generate a report of apartment events for a given apartment key."""
         if apartment_key not in self.apartments:
             raise ValueError("Apartment key does not exist")
@@ -116,7 +114,7 @@ class Manager:
 
     def create_tenants_settlements(
         self, apartment_settlement: ApartmentSettlement
-    ) -> List[TenantSettlement] | None:
+    ) -> list[TenantSettlement] | None:
         """Create tenant settlements based on the apartment settlement."""
         if apartment_settlement.month < 1 or apartment_settlement.month > 12:
             raise ValueError("Month must be between 1 and 12")
@@ -142,7 +140,7 @@ class Manager:
             for tenant in tenants_in_apartment
         ]
 
-    def get_debtors(self, apartment_key: str, year: int, month: int) -> List[str]:
+    def get_debtors(self, apartment_key: str, year: int, month: int) -> list[str]:
         """Get a list of tenant names (debtors) for a given apartment key, year, and month."""
         if month < 1 or month > 12:
             raise ValueError("Month must be between 1 and 12")
